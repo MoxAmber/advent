@@ -1,4 +1,4 @@
-from typing import List, Tuple, Union, Dict
+from typing import List, Tuple, Union, Dict, cast
 from collections import defaultdict
 from itertools import product
 
@@ -71,12 +71,12 @@ if __name__ == "__main__":
     neighbour_map = [[get_adjacent_seats(x, y, seat_map) for x in range(0, len(row))] for y, row in enumerate(seat_map)]
     seat_map = run_automata(neighbour_map, seat_map)
 
-    print(f'Part One: {sum(seat_map, []).count("#")}')
+    print(f'Part One: {sum(seat_map, cast(List[str], [])).count("#")}')
 
     with open('input.txt') as f:
         seat_map = [list(x.strip()) for x in f.readlines()]
 
     neighbour_map = [[get_visible_seats(x, y, seat_map) for x in range(0, len(row))] for y, row in enumerate(seat_map)]
     seat_map = run_automata(neighbour_map, seat_map, 5)
-    print(f'Part Two: {sum(seat_map, []).count("#")}')
+    print(f'Part Two: {sum(seat_map, cast(List[str], [])).count("#")}')
 
