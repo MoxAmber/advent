@@ -1,0 +1,7 @@
+{
+    "python.pythonPath": "/home/amber/.local/share/virtualenvs/advent-HNa7mHy_/bin/python",
+    "python.linting.pylintEnabled": false,
+    "python.linting.enabled": true,
+    "python.formatting.provider": "black",
+    "python.linting.mypyEnabled": true
+}
