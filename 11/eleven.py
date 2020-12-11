@@ -6,6 +6,8 @@ from itertools import product
 directions = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (-1, -1), (1, -1), (-1, 1)]
 def get_adjacent_seats(x: int, y: int, seat_map: List[List[str]]) -> List[Tuple[int, int]]:
     adjacent_seats: List[Tuple[int, int]] = []
+    if seat_map[y][x] == '.':
+        return adjacent_seats
     for dx, dy in directions:
         if y + dy >= 0 and y + dy < len(seat_map) and x + dx >= 0 and x + dx < len(seat_map[0]):
             adjacent_seats.append((x+dx, y+dy))
@@ -25,7 +27,9 @@ def trace_ray(dx: int, dy: int, x: int, y: int, seat_map: List[List[str]]) -> Un
     return ray_cache[(x,y)][(dx,dy)]
 
 def get_visible_seats(x: int, y: int, seat_map: List[List[str]]) -> List[Tuple[int,int]]:
-    visible_seats = []
+    visible_seats: List[Tuple[int, int]] = []
+    if seat_map[y][x] == '.':
+        return visible_seats
     for dx, dy in directions:
         seat = trace_ray(dx, dy, x, y, seat_map)
         if seat:
