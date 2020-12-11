@@ -2,9 +2,13 @@ from typing import List, Tuple, Union, Dict, cast
 from collections import defaultdict
 from itertools import product
 
+SeatMap = List[List[str]]
+Coordinate = Tuple[int, int]
+NeighbourMap = List[List[List[Coordinate]]]
 
 directions = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (-1, -1), (1, -1), (-1, 1)]
-def get_adjacent_seats(x: int, y: int, seat_map: List[List[str]]) -> List[Tuple[int, int]]:
+
+def get_adjacent_seats(x: int, y: int, seat_map: SeatMap) -> List[Coordinate]:
     adjacent_seats: List[Tuple[int, int]] = []
     if seat_map[y][x] == '.':
         return adjacent_seats
@@ -14,8 +18,8 @@ def get_adjacent_seats(x: int, y: int, seat_map: List[List[str]]) -> List[Tuple[
 
     return adjacent_seats
 
-ray_cache: Dict[Tuple[int, int], Dict[Tuple[int, int], Union[Tuple[int,int], None]]] = defaultdict(dict)
-def trace_ray(dx: int, dy: int, x: int, y: int, seat_map: List[List[str]]) -> Union[Tuple[int,int], None]:
+ray_cache: Dict[Coordinate, Dict[Coordinate, Union[Coordinate, None]]] = defaultdict(dict)
+def trace_ray(dx: int, dy: int, x: int, y: int, seat_map: SeatMap) -> Union[Coordinate, None]:
     if (x, y, dx, dy) in ray_cache:
         pass
     elif x + dx < 0 or x + dx >= len(seat_map[0]) or y + dy < 0 or y + dy >= len(seat_map):
@@ -26,7 +30,7 @@ def trace_ray(dx: int, dy: int, x: int, y: int, seat_map: List[List[str]]) -> Un
         ray_cache[(x,y)][(dx,dy)] = trace_ray(dx, dy, x+dx, y+dy, seat_map)
     return ray_cache[(x,y)][(dx,dy)]
 
-def get_visible_seats(x: int, y: int, seat_map: List[List[str]]) -> List[Tuple[int,int]]:
+def get_visible_seats(x: int, y: int, seat_map: SeatMap) -> List[Coordinate]:
     visible_seats: List[Tuple[int, int]] = []
     if seat_map[y][x] == '.':
         return visible_seats
@@ -37,10 +41,10 @@ def get_visible_seats(x: int, y: int, seat_map: List[List[str]]) -> List[Tuple[i
 
     return visible_seats
 
-def get_values(coords: List[Tuple[int, int]], seat_map: List[List[str]]) -> List[str]:
+def get_values(coords: List[Tuple[int, int]], seat_map: SeatMap) -> List[str]:
     return [seat_map[y][x] for x, y in coords]
 
-def run_automata(neighour_map: List[List[List[Tuple[int, int]]]], seat_map: List[List[str]], occupied_threshold = 4) -> List[List[str]]:
+def run_automata(neighour_map: NeighbourMap, seat_map: SeatMap, occupied_threshold = 4) -> SeatMap:
     changed_seats = True
     while changed_seats:
         changed_seats = False
