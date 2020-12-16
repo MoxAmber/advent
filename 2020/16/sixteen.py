@@ -28,8 +28,7 @@ def map_ticket(ticket: List[int], good_tickets: List[List[int]], rules: Dict[str
         for value, fields in valid_fields.items():
             if len(fields) == 1:
                 mapped_ticket[fields[0]] = value
-        new_valid_fields = {value: [x for x in fields if x not in mapped_ticket.keys()] for value, fields in valid_fields.items()}
-        valid_fields = new_valid_fields
+        valid_fields = {value: [x for x in fields if x not in mapped_ticket.keys()] for value, fields in valid_fields.items()}
     return mapped_ticket
 
 
@@ -63,5 +62,4 @@ if __name__ == "__main__":
     good_tickets = [x for x in tickets if x not in bad_tickets]
 
     mapped_ticket = map_ticket(my_ticket, good_tickets, rules)
-    print(mapped_ticket)
     print(f'Part Two {reduce(lambda x, y: x*y, (value for field, value in mapped_ticket.items() if field.startswith("departure")))}')
